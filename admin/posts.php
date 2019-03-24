@@ -99,7 +99,7 @@
       </table>
     </div>
   </div>
-
+  <?php $current_page = 'posts'; ?>
   <?php include 'inc/sidebar.php'; ?>
 
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
