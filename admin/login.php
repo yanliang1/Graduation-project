@@ -23,7 +23,7 @@ function login () {
   $password = $_POST['password'];
 
   // 当客户端提交过来的完整的表单信息就应该开始对其进行数据校验
-  $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+  $conn = mysqli_connect(BX_DB_HOST, BX_DB_USER, BX_DB_PASS, BX_DB_NAME);
   if (!$conn) {
     exit('<h1>连接数据库失败</h1>');
   }
@@ -53,6 +53,7 @@ function login () {
 
   // 存一个登录标识
   // $_SESSION['is_logged_in'] = true;
+  // 为了后面能够给直接获取当前登录用户的信息，这里直接将用户信息存放到 session 中
   $_SESSION['current_login_user'] = $user;
 
   // 一切OK 可以跳转

@@ -8,16 +8,16 @@
 /**
  * 数据库的主机
  */
- define('DB_HOST','localhost');
+ define('BX_DB_HOST','localhost');
 /**
 * 数据库的用户名
 */
- define('DB_USER','root');
+ define('BX_DB_USER','root');
 /**
 * 数据库的密码
 */
- define('DB_PASS','123456');
+ define('BX_DB_PASS','123456');
 /**
 * 数据库的密码
 */
- define('DB_NAME','baixiu');
+ define('BX_DB_NAME','baixiu');
