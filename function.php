@@ -53,3 +53,24 @@ function bx_fetch_one($sql){
     $res = bx_fetch_all($sql);
     return isset($res[0]) ? $res[0] : null;
 }
+
+/**
+ * 执行一个增删改功能
+ */
+function bx_execute($sql){
+    $conn = mysqli_connect(BX_DB_HOST, BX_DB_USER, BX_DB_PASS, BX_DB_NAME);
+    if(!$conn){
+        exit("连接失败");
+    }
+
+    $query = mysqli_query($conn,$sql);
+    if(!$query){
+        // 查询失败
+        return false;
+    }
+    
+    // 对于增删改类的操作都是获取受影响行数
+    $affected_rows = mysqli_affected_rows($conn);
+    
+    return $affected_rows;
+}

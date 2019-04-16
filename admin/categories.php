@@ -1,3 +1,35 @@
+<?php
+
+require_once '../function.php';
+// 判断用户是否登录最先做
+bx_get_current_user();
+
+function add_category(){
+  if(empty($_POST['name']) || empty($_POST['slug'])){
+    $GLOBALS['message'] = '请完整填写表单！';
+    $GLOBALS['success'] = false;
+    return;
+  }
+
+  // 接受并保存
+  $name = $_POST['name'];
+  $slug = $_POST['slug'];
+
+  // 增加语句
+  $rows = bx_execute("insert into categories values(null,'{$slug}','{$name}');");
+
+  $GLOBALS['success'] = $rows > 0;
+  $GLOBALS['message'] = $rows <= 0 ? '添加失败！' : '添加成功！';
+  
+}
+// 如果修改操作和查询操作都在页面存在，则先做修改操作，再查询
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  // 一旦表单提交，意味着添加数据
+  add_category();
+}
+// 查询全部的分类数据
+$categories = bx_fetch_all('select * from categories;');
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -19,12 +51,20 @@
         <h1>分类目录</h1>
       </div>
       <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong>发生XXX错误
-      </div> -->
+      <?php if(isset($message)): ?>
+      <?php if($success): ?>
+      <div class="alert alert-success">
+        <strong>正确！</strong><?php echo $message; ?>
+      </div>
+      <?php else: ?>
+      <div class="alert alert-danger">
+        <strong>错误！</strong><?php echo $message; ?>
+      </div>
+      <?php endif ?>
+      <?php endif ?>
       <div class="row">
         <div class="col-md-4">
-          <form>
+          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <h2>添加新分类目录</h2>
             <div class="form-group">
               <label for="name">名称</label>
@@ -55,33 +95,17 @@
               </tr>
             </thead>
             <tbody>
+              <?php foreach ($categories as $item): ?>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
+                <td><?php echo $item['name']; ?></td>
+                <td><?php echo $item['slug']; ?></td>
                 <td class="text-center">
                   <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
                   <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                 </td>
               </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
+              <?php endforeach ?>
             </tbody>
           </table>
         </div>
