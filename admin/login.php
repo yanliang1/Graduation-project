@@ -64,6 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   login();
 }
 
+// 退出功能
+if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'logout'){
+  // 删除了登录标识
+  unset($_SESSION['current_login_user']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
